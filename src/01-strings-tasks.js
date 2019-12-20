@@ -226,8 +226,10 @@ function getRectangleString(width, height) {
 function encodeToRot13(str) {
   return [...str].reduce((acc, el) => {
     const code = el.toUpperCase().charCodeAt(0);
-    /* eslint-disable */
-    const dif = code < 65 || code > 90 ? 0 : code < 78 ? 13 : -13;
+    let dif = 0;
+    if (code >= 65 && code <= 90) {
+      dif = code < 78 ? 13 : -13;
+    }
     return acc + String.fromCharCode(el.charCodeAt(0) + dif);
   }, '');
 }
@@ -278,8 +280,12 @@ function isString(value) {
  *   'K♠' => 51
  */
 function getCardId(value) {
-  const orderValue = { 'A': 0, '2': 1, '3': 2, '4': 3, '5': 4, '6': 5, '7': 6, '8': 7, '9': 8, '1': 9, 'J': 10, 'Q': 11, 'K': 12 };
-  const suitValue = { 9827: 0, 9830: 1, 9829: 2, 9824: 3 };
+  const orderValue = {
+    A: 0, 2: 1, 3: 2, 4: 3, 5: 4, 6: 5, 7: 6, 8: 7, 9: 8, 1: 9, J: 10, Q: 11, K: 12,
+  };
+  const suitValue = {
+    9827: 0, 9830: 1, 9829: 2, 9824: 3,
+  };
   const orderSymbol = value.charAt(0);
   const suitCode = value.codePointAt(value.length - 1);
   return suitValue[suitCode] * 13 + orderValue[orderSymbol];
