@@ -469,8 +469,18 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  const checkLine = (line) => {
+    const symbol = line[0];
+    const result = line.length === 3 && line.every((el) => el === symbol) ? symbol : undefined;
+    return result;
+  };
+  const horToLine = (filed) => [...filed];
+  const vertToLine = (filed) => filed.map((el, i) => [filed[0][i], filed[1][i], filed[2][i]]);
+  const diagToLine = (p) => [[p[0][0], p[1][1], p[2][2]], [p[0][2], p[1][1], p[2][0]]];
+  const allLines = [...horToLine(position), ...vertToLine(position), ...diagToLine(position)];
+  /* eslint-disable-next-line */
+  return allLines.reduce((acc, el) => (acc? acc : checkLine(el) ? checkLine(el) : acc), undefined);
 }
 
 
